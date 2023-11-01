@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ddde6072aeb87df1b58cd98ec870eae4",
+    "content-hash": "0d00835c82b9b234150edf1b6e83eb91",
     "packages": [
         {
             "name": "brick/math",
@@ -63,7 +63,7 @@
         },
         {
             "name": "kampfcaspar/jwt",
-            "version": "dev-master",
+            "version": "v0.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KampfCaspar/jwt.git",
@@ -81,7 +81,6 @@
             "require-dev": {
                 "phpstan/phpstan": "^1.10"
             },
-            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -108,7 +107,7 @@
             ],
             "support": {
                 "issues": "https://github.com/KampfCaspar/jwt/issues",
-                "source": "https://github.com/KampfCaspar/jwt/tree/master"
+                "source": "https://github.com/KampfCaspar/jwt/tree/v0.1.0"
             },
             "time": "2023-10-31T17:49:21+00:00"
         },
@@ -4185,9 +4184,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "kampfcaspar/jwt": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
