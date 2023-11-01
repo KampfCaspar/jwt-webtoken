@@ -1,0 +1,16 @@
+vendor/
+build/
+/.idea/
+
+/composer.phar
+
+*.cache
+*~
+*.swp
+*.bak
+.directory
+.Trash-*
+Thumbs.db
+Thumbs.db:encryptable
+[Dd]esktop.ini
+$RECYCLE.BIN/

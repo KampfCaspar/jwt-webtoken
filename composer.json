@@ -1,0 +1,68 @@
+{
+  "name": "kampfcaspar/jwt-webtoken",
+  "description": "JWT PHP abstraction to web-token",
+  "homepage": "https://github.com/KampfCaspar/JWT",
+  "license": "AGPL-3.0-or-later",
+  "type": "library",
+  "require": {
+    "php": "^8.1",
+    "psr/log": "^3.0.0",
+    "kampfcaspar/jwt": "dev-master",
+    "web-token/jwt-core": "^3.2",
+    "web-token/jwt-checker": "^3.2",
+    "web-token/jwt-signature": "^3.2",
+    "web-token/jwt-encryption": "^3.2",
+    "web-token/jwt-nested-token": "^3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^10.0",
+    "phpstan/phpstan": "^1.10",
+    "phpstan/extension-installer": "^1.3",
+    "phpstan/phpstan-phpunit": "^1.3",
+    "struggle-for-php/sfp-phpstan-psr-log": "^0.17",
+
+    "web-token/jwt-encryption-algorithm-aescbc": "^3.2",
+    "web-token/jwt-encryption-algorithm-aesgcm": "^3.2",
+    "web-token/jwt-encryption-algorithm-aesgcmkw": "^3.2",
+    "web-token/jwt-encryption-algorithm-aeskw": "^3.2",
+    "web-token/jwt-encryption-algorithm-dir": "^3.2",
+    "web-token/jwt-encryption-algorithm-ecdh-es": "^3.2",
+    "web-token/jwt-encryption-algorithm-experimental": "^3.2",
+    "web-token/jwt-encryption-algorithm-pbes2": "^3.2",
+    "web-token/jwt-encryption-algorithm-rsa": "^3.2",
+    "web-token/jwt-signature-algorithm-hmac": "^3.2",
+    "web-token/jwt-signature-algorithm-ecdsa": "^3.2",
+    "web-token/jwt-signature-algorithm-eddsa": "^3.2",
+    "web-token/jwt-signature-algorithm-experimental": "^3.2",
+    "web-token/jwt-signature-algorithm-rsa": "^3.2",
+    "web-token/jwt-signature-algorithm-none": "^3.2",
+    "web-token/jwt-key-mgmt": "^3.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "KampfCaspar\\JWT\\WebToken\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "KampfCaspar\\Test\\JWT\\WebToken\\": "tests/"
+    }
+  },
+  "keywords": [
+    "jwt",
+    "jws",
+    "jwe"
+  ],
+  "authors": [
+    {
+      "name": "KampfCaspar",
+      "email": "code@kampfcaspar.ch",
+      "role": "Developer"
+    }
+  ],
+  "config": {
+    "allow-plugins": {
+      "phpstan/extension-installer": true
+    }
+  }
+}
