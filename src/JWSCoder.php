@@ -108,7 +108,7 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * create a SerializerManager with the collected serializers for decoding
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _createSerializerManager(): JWSSerializerManager
 	{
@@ -121,7 +121,7 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * get (and create) a JWSBuilder
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _getJWSBuilder(): JWSBuilder
 	{
@@ -136,7 +136,7 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * get (and create) a JWSLoader
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _getJWSLoader(): JWSLoader
 	{
@@ -221,7 +221,7 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * decode and return JWS
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _decodeObject(string $token): JWS
 	{

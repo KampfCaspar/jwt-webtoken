@@ -144,7 +144,7 @@ class JWECoder extends AbstractCoder
 	/**
 	 * create a SerializerManager with the collected serializers for decoding
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _createSerializerManager(): JWESerializerManager
 	{
@@ -157,7 +157,7 @@ class JWECoder extends AbstractCoder
 	/**
 	 * get (and create) a JWEBuilder
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _getJWEBuilder() : JWEBuilder
 	{
@@ -174,7 +174,7 @@ class JWECoder extends AbstractCoder
 	/**
 	 * get (and create) a JWELoader
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _getJWELoader() : JWELoader
 	{
@@ -279,7 +279,7 @@ class JWECoder extends AbstractCoder
 	/**
 	 * decode and return JWE
 	 *
-	 * @private  but also used in {@see NestedCoder}
+	 * @internal  also used in {@see NestedCoder}
 	 */
 	public function _decodeObject(string $token): JWE
 	{
