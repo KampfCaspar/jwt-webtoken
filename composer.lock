@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0d00835c82b9b234150edf1b6e83eb91",
+    "content-hash": "2246e6cb3c1c1b1f13afa5a8a228e8c7",
     "packages": [
         {
             "name": "brick/math",
@@ -63,20 +63,21 @@
         },
         {
             "name": "kampfcaspar/jwt",
-            "version": "v0.1.0",
+            "version": "v0.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/KampfCaspar/jwt.git",
-                "reference": "4d05fae383d4c219e4b85e07c80efe4c4d4a3f15"
+                "reference": "3018feb285a68d214c06746e563199d26e7eb2db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/KampfCaspar/jwt/zipball/4d05fae383d4c219e4b85e07c80efe4c4d4a3f15",
-                "reference": "4d05fae383d4c219e4b85e07c80efe4c4d4a3f15",
+                "url": "https://api.github.com/repos/KampfCaspar/jwt/zipball/3018feb285a68d214c06746e563199d26e7eb2db",
+                "reference": "3018feb285a68d214c06746e563199d26e7eb2db",
                 "shasum": ""
             },
             "require": {
-                "php": "^8.1"
+                "php": "^8.1",
+                "psr/log": "^3.0.0"
             },
             "require-dev": {
                 "phpstan/phpstan": "^1.10"
@@ -107,9 +108,9 @@
             ],
             "support": {
                 "issues": "https://github.com/KampfCaspar/jwt/issues",
-                "source": "https://github.com/KampfCaspar/jwt/tree/v0.1.0"
+                "source": "https://github.com/KampfCaspar/jwt/tree/v0.2.0"
             },
-            "time": "2023-10-31T17:49:21+00:00"
+            "time": "2023-11-05T11:41:58+00:00"
         },
         {
             "name": "paragonie/constant_time_encoding",

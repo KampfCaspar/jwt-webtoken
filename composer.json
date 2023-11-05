@@ -7,7 +7,7 @@
   "require": {
     "php": "^8.1",
     "psr/log": "^3.0.0",
-    "kampfcaspar/jwt": "^0.1",
+    "kampfcaspar/jwt": "^0.2",
     "web-token/jwt-core": "^3.2",
     "web-token/jwt-checker": "^3.2",
     "web-token/jwt-signature": "^3.2",

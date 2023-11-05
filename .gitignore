@@ -1,16 +1,18 @@
 vendor/
-build/
-/.idea/
+ build/
+ /.idea/
+ /.phpdoc/
+ /var/
 
-/composer.phar
+ /composer.phar
 
-*.cache
-*~
-*.swp
-*.bak
-.directory
-.Trash-*
-Thumbs.db
-Thumbs.db:encryptable
-[Dd]esktop.ini
-$RECYCLE.BIN/
+ *.cache
+ *~
+ *.swp
+ *.bak
+ .directory
+ .Trash-*
+ Thumbs.db
+ Thumbs.db:encryptable
+ [Dd]esktop.ini
+ $RECYCLE.BIN/
