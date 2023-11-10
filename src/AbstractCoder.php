@@ -12,6 +12,7 @@ namespace KampfCaspar\JWT\WebToken;
 
 use Jose\Component\Core\Algorithm;
 use Jose\Component\Core\JWK;
+use KampfCaspar\JWT\JWT;
 use KampfCaspar\JWT\JWTDecoderInterface;
 use KampfCaspar\JWT\JWTDecoderTrait;
 use KampfCaspar\JWT\JWTEncoderInterface;
@@ -36,7 +37,7 @@ use Psr\Log\LoggerAwareTrait;
  */
 abstract class AbstractCoder implements LoggerAwareInterface, JWTDecoderInterface, JWTEncoderInterface
 {
-	use JWTDecoderTrait, JWTEncoderTrait;
+	use JWTDecoderTrait;
 	use LoggerAwareTrait;
 
 	/** JWK used to decode
@@ -135,13 +136,13 @@ abstract class AbstractCoder implements LoggerAwareInterface, JWTDecoderInterfac
 	/**
 	 * @inheritdoc
 	 */
-	abstract public function decodeBinary(string $token): string;
+	abstract public function decodeBinary(string $token): array;
 
 	/**
 	 * @inheritdoc
 	 */
-	abstract public function encodeBinary(
-		string $payload,
+	abstract public function encode(
+		array|JWT|string $payload,
 		array $header = [],
 		array|string|null $additionalKeys = null,
 		?JWTSerializerEnum $serializer = null): string;
@@ -263,6 +264,43 @@ abstract class AbstractCoder implements LoggerAwareInterface, JWTDecoderInterfac
 			}
 		}
 		return $res;
+	}
+
+	/**
+	 * @param array<mixed>|string|null $additionalKeys
+	 * @return \Iterator<JWK>
+	 */
+	protected function getKeyIterator(array|string|null $additionalKeys): \Iterator
+	{
+		$keys = new \AppendIterator();
+		if (!is_null($additionalKeys)) {
+			$additionalKeys = $this->createJWKArray($additionalKeys);
+			$keys->append(new \ArrayIterator($additionalKeys));
+		}
+		if (!is_null($additionalKeys) || count($this->encodeKeys)) {
+			$keys->append(new \ArrayIterator($this->encodeKeys));
+		}
+		else {
+			$keys->append(new \ArrayIterator($this->decodeKeys));
+		}
+		return $keys;
+	}
+
+	protected function getEncodingPayload(array|JWT|string $source): array
+	{
+		$payload = $source instanceof JWT ? $source->getArrayCopy() : $source;
+		if (is_array($payload)) {
+			$payload = json_encode($payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+			if ($payload === false) {
+				throw new \InvalidArgumentException('failure JSON encoding');
+			}
+		}
+		$header = $source instanceof JWT ? $source->getHeaders()->getArrayCopy() : [];
+
+		return [
+			$payload,
+			$header
+		];
 	}
 
 	/**

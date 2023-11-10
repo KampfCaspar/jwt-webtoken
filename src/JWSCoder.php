@@ -25,6 +25,7 @@ use Jose\Component\Signature\Serializer\JSONFlattenedSerializer;
 use Jose\Component\Signature\Serializer\JSONGeneralSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializer;
 use Jose\Component\Signature\Serializer\JWSSerializerManager;
+use KampfCaspar\JWT\JWT;
 use KampfCaspar\JWT\JWTSerializerEnum;
 
 /**
@@ -161,26 +162,18 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * @inheritdoc
 	 */
-	public function encodeBinary(
-		string $payload,
+	public function encode(
+		array|JWT|string $payload,
 		array $header = [],
 		array|string|null $additionalKeys = null,
 		?JWTSerializerEnum $serializer = null): string
 	{
-		$keys = new \AppendIterator();
-		if (!is_null($additionalKeys)) {
-			$additionalKeys = $this->createJWKArray($additionalKeys);
-			$keys->append(new \ArrayIterator($additionalKeys));
-		}
-		if (!is_null($additionalKeys) || count($this->encodeKeys)) {
-			$keys->append(new \ArrayIterator($this->encodeKeys));
-		}
-		else {
-			$keys->append(new \ArrayIterator($this->decodeKeys));
-		}
+		$keys = $this->getKeyIterator($additionalKeys);
+		[$payload_binary, $header_source] = $this->getEncodingPayload($payload);
+
 		$builder = $this->_getJWSBuilder()
 			->create()
-			->withPayload($payload);
+			->withPayload($payload_binary);
 
 		foreach ($keys as $key) {
 			if (!$this->canKeyUsage($key, 'sign')) {
@@ -196,8 +189,10 @@ class JWSCoder extends AbstractCoder
 			if (!$foundAlg) {
 				continue;
 			}
-			// @phpstan-ignore-next-line as $alg IS set
-			$builder = $builder->addSignature($key, ['alg' => $alg->name()] + $header);
+			$builder = $builder->addSignature(
+				$key,
+				['alg' => $alg->name()] + $header + $header_source // @phpstan-ignore-line
+			);
 			// @phpstan-ignore-next-line as $alg IS set
 			$this->logAlgorithmKeyCheck($alg, $key);
 
@@ -238,9 +233,13 @@ class JWSCoder extends AbstractCoder
 	/**
 	 * @inheritdoc
 	 */
-	public function decodeBinary(string $token): string
+	public function decodeBinary(string $token): array
 	{
-		return $this->_decodeObject($token)->getPayload() ?? '';
+		$jws = $this->_decodeObject($token);
+		return [
+			$jws->getPayload() ?? '',
+			$jws->getSignature(0)->getProtectedHeader()
+		];
 	}
 
 }

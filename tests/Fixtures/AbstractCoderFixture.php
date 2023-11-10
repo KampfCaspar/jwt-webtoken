@@ -2,6 +2,7 @@
 
 namespace KampfCaspar\Test\JWT\WebToken\Fixtures;
 
+use KampfCaspar\JWT\JWT;
 use KampfCaspar\JWT\JWTSerializerEnum;
 use KampfCaspar\JWT\WebToken\AbstractCoder;
 class AbstractCoderFixture extends AbstractCoder
@@ -11,12 +12,12 @@ class AbstractCoderFixture extends AbstractCoder
 		return $this;
 	}
 
-	public function decodeBinary(string $token): string
+	public function decodeBinary(string $token): array
 	{
 		return $this;
 	}
 
-	public function encodeBinary(string $payload, array $header = [], array|string|null $additionalKeys = null, ?JWTSerializerEnum $serializer = null): string
+	public function encode(array|JWT|string $payload, array $header = [], array|string|null $additionalKeys = null, ?JWTSerializerEnum $serializer = null): string
 	{
 		return '';
 	}

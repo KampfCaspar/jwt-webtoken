@@ -28,10 +28,11 @@ use Jose\Component\Encryption\Serializer\JSONFlattenedSerializer;
 use Jose\Component\Encryption\Serializer\JSONGeneralSerializer;
 use Jose\Component\Encryption\Serializer\JWESerializer;
 use Jose\Component\Encryption\Serializer\JWESerializerManager;
+use KampfCaspar\JWT\JWT;
 use KampfCaspar\JWT\JWTSerializerEnum;
 
 /**
- * JWE Creation and Consumption Frontend
+ * JWE Creation and Consumption Frontend using web-token
  *
  * Abstraction class that either creates a JWE (encodes) from a given payload or
  * verifies and consumes (decrypts) a JWE and returns the payload.
@@ -202,19 +203,14 @@ class JWECoder extends AbstractCoder
 	/**
 	 * @inheritdoc
 	 */
-	public function encodeBinary(string $payload, array $header = [], array|string|null $additionalKeys = null, ?JWTSerializerEnum $serializer = null): string
+	public function encode(
+		array|JWT|string $payload,
+		array $header = [],
+		array|string|null $additionalKeys = null,
+		?JWTSerializerEnum $serializer = null): string
 	{
-		$keys = new \AppendIterator();
-		if (!is_null($additionalKeys)) {
-			$additionalKeys = $this->createJWKArray($additionalKeys);
-			$keys->append(new \ArrayIterator($additionalKeys));
-		}
-		if (!is_null($additionalKeys) || count($this->encodeKeys)) {
-			$keys->append(new \ArrayIterator($this->encodeKeys));
-		}
-		else {
-			$keys->append(new \ArrayIterator($this->decodeKeys));
-		}
+		$keys = $this->getKeyIterator($additionalKeys);
+		[$payload_binary, $header_source] = $this->getEncodingPayload($payload);
 
 		$recipients = [];
 		foreach ($keys as $key) {
@@ -247,14 +243,14 @@ class JWECoder extends AbstractCoder
 
 		$builder = $this->_getJWEBuilder()
 			->create()
-			->withPayload($payload);
+			->withPayload($payload_binary);
 		if (count($recipients) == 1) {
 			$builder = $builder
 				->withSharedProtectedHeader([
 					'enc' => $this->contentAlgorithms[0]->name(),
 					'zip' => 'DEF',
 					'alg' => $recipients[0][1]
-				] + $header)
+				] + $header + $header_source)
 				->addRecipient($recipients[0][0]);
 		}
 		else {
@@ -262,7 +258,7 @@ class JWECoder extends AbstractCoder
 				->withSharedProtectedHeader([
 					'enc' => $this->contentAlgorithms[0]->name(),
 					'zip' => 'DEF',
-				] + $header);
+				] + $header + $header_source);
 			foreach ($recipients as $recipient) {
 				$builder = $builder->addRecipient($recipient[0], ['alg' => $recipient[1]]);
 			}
@@ -296,9 +292,14 @@ class JWECoder extends AbstractCoder
 	/**
 	 * @inheritdoc
 	 */
-	public function decodeBinary(string $token): string
+	public function decodeBinary(string $token): array
 	{
-		return $this->_decodeObject($token)->getPayload() ?? '';
+
+		$jwe = $this->_decodeObject($token);
+		return [
+			$jwe->getPayload() ?? '',
+			$jwe->getRecipient(0)->getHeader() + $jwe->getSharedProtectedHeader()
+		];
 	}
 
 }

@@ -10,10 +10,10 @@
 
 namespace KampfCaspar\JWT\WebToken;
 
+use KampfCaspar\JWT\JWT;
 use KampfCaspar\JWT\JWTDecoderInterface;
 use KampfCaspar\JWT\JWTDecoderTrait;
 use KampfCaspar\JWT\JWTEncoderInterface;
-use KampfCaspar\JWT\JWTEncoderTrait;
 use KampfCaspar\JWT\JWTSerializerEnum;
 use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
@@ -26,8 +26,8 @@ use Psr\Log\LoggerAwareTrait;
  */
 class NestedCoder implements LoggerAwareInterface, JWTEncoderInterface, JWTDecoderInterface
 {
+	use JWTDecoderTrait;
 	use LoggerAwareTrait;
-	use JWTEncoderTrait, JWTDecoderTrait;
 
 	/** instantiate the nested token code
 	 * @param JWECoder $jweCoder
@@ -41,15 +41,15 @@ class NestedCoder implements LoggerAwareInterface, JWTEncoderInterface, JWTDecod
 	/**
 	 * @inheritdoc
 	 */
-	public function encodeBinary(
-		string $payload,
+	public function encode(
+		array|JWT|string $payload,
 		array $header = [],
 		array|string|null $additionalKeys = null,
 		?JWTSerializerEnum $serializer = null
 	): string
 	{
-		$jws_str = $this->jwsCoder->encodeBinary($payload);
-		$jwe_str = $this->jweCoder->encodeBinary(
+		$jws_str = $this->jwsCoder->encode($payload);
+		$jwe_str = $this->jweCoder->encode(
 			$jws_str,
 			['cty' => 'JWT'] + $header,
 			$additionalKeys,
@@ -61,7 +61,7 @@ class NestedCoder implements LoggerAwareInterface, JWTEncoderInterface, JWTDecod
 	/**
 	 * @throws \Exception
 	 */
-	public function decodeBinary(string $token): string
+	public function decodeBinary(string $token): array
 	{
 		$jwe = $this->jweCoder->_decodeObject($token);
 		if ($jwe->getSharedProtectedHeaderParameter('cty') != 'JWT') {
@@ -69,9 +69,12 @@ class NestedCoder implements LoggerAwareInterface, JWTEncoderInterface, JWTDecod
 		}
 		$payload = $jwe->getPayload();
 		if (is_null($payload)) {
-			throw new \InvalidArgumentException('nested token is not ested');
+			throw new \InvalidArgumentException('nested token is not nested');
 		}
 		$jws = $this->jwsCoder->_decodeObject($payload);
-		return $jws->getPayload() ?? '';
+		return [
+			$jws->getPayload() ?? '',
+			$jws->getSignature(0)->getProtectedHeader(),
+		];
 	}
 }
